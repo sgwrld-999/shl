@@ -4,20 +4,20 @@
 
 **Resource ID:**
 ```
-projects/868684576817/locations/us-central1/reasoningEngines/4371319582456020992
+projects/YOUR_PROJECT_NUMBER/locations/us-central1/reasoningEngines/YOUR_RESOURCE_ID
 ```
 
-**Project:** shl-recommender-477516  
+**Project:** YOUR_PROJECT_ID  
 **Location:** us-central1  
-**Status:** Deploying (check logs below)
+**Status:** Building (5-10 minutes) - Fixed faiss-cpu version issue
 
 ## Monitor Deployment Progress
 
 **View Logs:**
-https://console.cloud.google.com/logs/query?project=shl-recommender-477516
+https://console.cloud.google.com/logs/query?project=YOUR_PROJECT_ID
 
 **View in Console:**
-https://console.cloud.google.com/vertex-ai/reasoning-engines?project=shl-recommender-477516
+https://console.cloud.google.com/vertex-ai/reasoning-engines?project=YOUR_PROJECT_ID
 
 ## Once Deployment is Complete (5-10 minutes)
 
@@ -36,7 +36,7 @@ source activate.sh
 ### Step 2: Create a Session
 ```bash
 poetry run python deployment/remote.py --create_session \
-  --resource_id=projects/868684576817/locations/us-central1/reasoningEngines/4371319582456020992
+  --resource_id=projects/YOUR_PROJECT_NUMBER/locations/us-central1/reasoningEngines/YOUR_RESOURCE_ID
 ```
 
 **Save the session ID** from the output!
@@ -44,7 +44,7 @@ poetry run python deployment/remote.py --create_session \
 ### Step 3: Send Your First Query
 ```bash
 poetry run python deployment/remote.py --send \
-  --resource_id=projects/868684576817/locations/us-central1/reasoningEngines/4371319582456020992 \
+  --resource_id=projects/YOUR_PROJECT_NUMBER/locations/us-central1/reasoningEngines/YOUR_RESOURCE_ID \
   --session_id=YOUR_SESSION_ID \
   --message="I need a Python developer with leadership skills"
 ```
@@ -54,7 +54,7 @@ poetry run python deployment/remote.py --send \
 ### 1. Technical + Behavioral
 ```bash
 poetry run python deployment/remote.py --send \
-  --resource_id=projects/868684576817/locations/us-central1/reasoningEngines/4371319582456020992 \
+  --resource_id=projects/YOUR_PROJECT_NUMBER/locations/us-central1/reasoningEngines/YOUR_RESOURCE_ID \
   --session_id=YOUR_SESSION_ID \
   --message="Java developer who can collaborate with business teams"
 ```
@@ -62,7 +62,7 @@ poetry run python deployment/remote.py --send \
 ### 2. Pure Technical
 ```bash
 poetry run python deployment/remote.py --send \
-  --resource_id=projects/868684576817/locations/us-central1/reasoningEngines/4371319582456020992 \
+  --resource_id=projects/YOUR_PROJECT_NUMBER/locations/us-central1/reasoningEngines/YOUR_RESOURCE_ID \
   --session_id=YOUR_SESSION_ID \
   --message="Python, SQL and JavaScript proficiency"
 ```
@@ -70,7 +70,7 @@ poetry run python deployment/remote.py --send \
 ### 3. Sales Role
 ```bash
 poetry run python deployment/remote.py --send \
-  --resource_id=projects/868684576817/locations/us-central1/reasoningEngines/4371319582456020992 \
+  --resource_id=projects/YOUR_PROJECT_NUMBER/locations/us-central1/reasoningEngines/YOUR_RESOURCE_ID \
   --session_id=YOUR_SESSION_ID \
   --message="Sales representative with strong communication"
 ```
@@ -78,7 +78,7 @@ poetry run python deployment/remote.py --send \
 ### 4. Leadership Assessment
 ```bash
 poetry run python deployment/remote.py --send \
-  --resource_id=projects/868684576817/locations/us-central1/reasoningEngines/4371319582456020992 \
+  --resource_id=projects/YOUR_PROJECT_NUMBER/locations/us-central1/reasoningEngines/YOUR_RESOURCE_ID \
   --session_id=YOUR_SESSION_ID \
   --message="Leadership and management skills for senior roles"
 ```
@@ -93,29 +93,29 @@ poetry run python deployment/remote.py --list
 ### List Sessions
 ```bash
 poetry run python deployment/remote.py --list_sessions \
-  --resource_id=projects/868684576817/locations/us-central1/reasoningEngines/4371319582456020992
+  --resource_id=projects/YOUR_PROJECT_NUMBER/locations/us-central1/reasoningEngines/YOUR_RESOURCE_ID
 ```
 
 ### Get Session Details
 ```bash
 poetry run python deployment/remote.py --get_session \
-  --resource_id=projects/868684576817/locations/us-central1/reasoningEngines/4371319582456020992 \
+  --resource_id=projects/YOUR_PROJECT_NUMBER/locations/us-central1/reasoningEngines/YOUR_RESOURCE_ID \
   --session_id=YOUR_SESSION_ID
 ```
 
 ### Delete Deployment (when done)
 ```bash
 poetry run python deployment/remote.py --delete \
-  --resource_id=projects/868684576817/locations/us-central1/reasoningEngines/4371319582456020992
+  --resource_id=projects/YOUR_PROJECT_NUMBER/locations/us-central1/reasoningEngines/YOUR_RESOURCE_ID
 ```
 
 ## Check Deployment Status
 
 Run this command to check if deployment is complete:
 ```bash
-gcloud ai reasoning-engines describe 4371319582456020992 \
+gcloud ai reasoning-engines describe YOUR_RESOURCE_ID \
   --region=us-central1 \
-  --project=shl-recommender-477516
+  --project=YOUR_PROJECT_ID
 ```
 
 Look for `state: ACTIVE` in the output.
@@ -128,12 +128,12 @@ import vertexai
 from vertexai import agent_engines
 
 vertexai.init(
-    project="shl-recommender-477516",
+    project="YOUR_PROJECT_ID",
     location="us-central1",
-    staging_bucket="gs://shl-agent-staging"
+    staging_bucket="gs://YOUR_BUCKET_NAME"
 )
 
-resource_id = "projects/868684576817/locations/us-central1/reasoningEngines/4371319582456020992"
+resource_id = "projects/YOUR_PROJECT_NUMBER/locations/us-central1/reasoningEngines/YOUR_RESOURCE_ID"
 
 try:
     remote_app = agent_engines.get(resource_id)
@@ -150,8 +150,8 @@ poetry run python check_deployment.py
 
 ## Access via Google Cloud Console
 
-1. Go to: https://console.cloud.google.com/vertex-ai/reasoning-engines?project=shl-recommender-477516
-2. Find your agent: `4371319582456020992`
+1. Go to: https://console.cloud.google.com/vertex-ai/reasoning-engines?project=YOUR_PROJECT_ID
+2. Find your agent: `YOUR_RESOURCE_ID`
 3. Click to view details and test directly in the console
 
 ## Integration into Your Application
@@ -164,13 +164,13 @@ import vertexai
 
 # Initialize
 vertexai.init(
-    project="shl-recommender-477516",
+    project="YOUR_PROJECT_ID",
     location="us-central1",
-    staging_bucket="gs://shl-agent-staging"
+    staging_bucket="gs://YOUR_BUCKET_NAME"
 )
 
 # Get the deployed agent
-resource_id = "projects/868684576817/locations/us-central1/reasoningEngines/4371319582456020992"
+resource_id = "projects/YOUR_PROJECT_NUMBER/locations/us-central1/reasoningEngines/YOUR_RESOURCE_ID"
 remote_app = agent_engines.get(resource_id)
 
 # Create session
@@ -188,24 +188,72 @@ for event in remote_app.stream_query(
 ## Costs
 
 Monitor your usage and costs:
-- **Console:** https://console.cloud.google.com/billing?project=shl-recommender-477516
+- **Console:** https://console.cloud.google.com/billing?project=YOUR_PROJECT_ID
 - **Agent Engine:** Charged per session
 - **Gemini API:** Charged per token
 
-## Support
+## Troubleshooting
+
+### Common Issues
+
+#### 1. "Build failed" Error
+- **Cause:** Dependency conflicts or timeout during build
+- **Solution:** Check Cloud Build logs, verify requirements.txt, ensure numpy/faiss versions are compatible
+
+#### 2. "ReasoningEngine does not exist"
+- **Cause:** Deployment failed or hasn't completed yet
+- **Solution:** Wait 5-10 minutes for build, check logs for errors
+
+#### 3. "DefaultCredentialsError"
+- **Cause:** Not authenticated with Google Cloud
+- **Solution:** Run `gcloud auth application-default login`
+
+#### 4. Session creation fails
+- **Cause:** Deployment not in ACTIVE state
+- **Solution:** Verify deployment with `poetry run python deployment/remote.py --list`
+
+### Getting Help
 
 If you encounter issues:
-1. Check logs: https://console.cloud.google.com/logs/query?project=shl-recommender-477516
-2. Verify deployment status in console
-3. Ensure credentials are valid: `gcloud auth application-default login`
+1. **Check build logs:** https://console.cloud.google.com/logs/query?project=YOUR_PROJECT_ID
+2. **Verify deployment status:** Run the check_status.py script
+3. **Review configuration:** Ensure .env file has correct values
+4. **Validate credentials:** `gcloud auth application-default login`
+
+## Configuration Reference
+
+### Required Environment Variables
+
+Create a `.env` file in the project root (or use `app/.env`):
+
+```bash
+# Google Cloud Configuration
+GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID
+GOOGLE_CLOUD_LOCATION=us-central1
+GOOGLE_CLOUD_STAGING_BUCKET=gs://YOUR_BUCKET_NAME
+
+# API Keys
+GEMINI_API_KEY=your-api-key-here
+
+# Optional: Enable Vertex AI
+GOOGLE_GENAI_USE_VERTEXAI=TRUE
+```
+
+### Getting Your Configuration Values
+
+1. **Project ID:** Find at https://console.cloud.google.com/home/dashboard
+2. **Bucket Name:** Created during setup or create manually
+3. **API Key:** Get from https://aistudio.google.com/app/apikey
+4. **Resource ID:** Returned after successful deployment
 
 ## Quick Reference
 
-**Resource ID (save this!):**
+**Resource ID Format:**
 ```
-projects/868684576817/locations/us-central1/reasoningEngines/4371319582456020992
+projects/YOUR_PROJECT_NUMBER/locations/LOCATION/reasoningEngines/YOUR_RESOURCE_ID
 ```
 
-**Project:** `shl-recommender-477516`  
-**Location:** `us-central1`  
-**Bucket:** `gs://shl-agent-staging`
+**Example Configuration:**
+- **Project:** `YOUR_PROJECT_ID` (e.g., my-shl-project)
+- **Location:** `us-central1` (or your preferred region)
+- **Bucket:** `gs://YOUR_BUCKET_NAME` (e.g., my-agent-staging)

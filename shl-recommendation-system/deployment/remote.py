@@ -64,12 +64,9 @@ def create() -> None:
     remote_app = agent_engines.create(
         agent_engine=app,
         requirements=[
-            "google-cloud-aiplatform[adk,agent_engines]",
-            "faiss-cpu==1.8.0",
+            "faiss-cpu==1.9.0.post1",
             "sentence-transformers==3.1.1",
-            "numpy==1.26.4",
-            "pandas==2.2.2",
-            "python-dotenv==1.0.1",
+            "numpy==1.26.4",  # Use specific version with pre-built wheels
         ],
         extra_packages=["./app/shl_agent", "./data"],
     )

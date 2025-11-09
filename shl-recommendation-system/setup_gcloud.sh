@@ -19,10 +19,13 @@ fi
 
 echo "✓ gcloud CLI found"
 
-# Get project ID from .env or prompt
-PROJECT_ID="shl-recommender-477516"
-LOCATION="us-central1"
-BUCKET_NAME="shl-agent-staging"
+# Get project configuration interactively
+echo "Please provide your Google Cloud configuration:"
+echo ""
+read -p "Enter your Google Cloud Project ID: " PROJECT_ID
+read -p "Enter location (default: us-central1): " LOCATION
+LOCATION=${LOCATION:-us-central1}
+read -p "Enter bucket name (without gs://): " BUCKET_NAME
 
 echo ""
 echo "Configuration:"
@@ -31,13 +34,11 @@ echo "  Location: $LOCATION"
 echo "  Bucket: gs://$BUCKET_NAME"
 echo ""
 
-read -p "Is this configuration correct? (y/n): " -n 1 -r
+read -p "Proceed with this configuration? (y/n): " -n 1 -r
 echo ""
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-    read -p "Enter your Google Cloud Project ID: " PROJECT_ID
-    read -p "Enter location (default: us-central1): " LOCATION
-    LOCATION=${LOCATION:-us-central1}
-    read -p "Enter bucket name (without gs://): " BUCKET_NAME
+    echo "Setup cancelled."
+    exit 1
 fi
 
 echo ""
@@ -68,7 +69,12 @@ echo "Step 5: Setting up application default credentials..."
 gcloud auth application-default login
 
 echo ""
-echo "Step 6: Updating .env file..."
+echo "Step 6: Configuring environment..."
+echo ""
+read -sp "Enter your Google API Key (Gemini): " GEMINI_API_KEY
+echo ""
+
+echo "Creating .env file..."
 cat > app/.env << EOF
 # Environment Configuration for SHL Recommendation System
 
@@ -81,7 +87,7 @@ GOOGLE_CLOUD_LOCATION=$LOCATION
 GOOGLE_CLOUD_STAGING_BUCKET=gs://$BUCKET_NAME
 
 # Google API Key (required for Gemini model)
-GEMINI_API_KEY=AIzaSyCqMxXXHLGbG-eRx7YLOXBwWPwZq4dnLOw
+GEMINI_API_KEY=$GEMINI_API_KEY
 
 # Server Configuration
 HOST=0.0.0.0

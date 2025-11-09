@@ -5,7 +5,7 @@
 ### 1. Google Cloud SDK
 - ✓ Installed and configured
 - ✓ Authenticated with `gcloud auth login`
-- ✓ Project set to: `shl-recommender-477516`
+- ✓ Project set to: `YOUR_PROJECT_ID`
 - ✓ Application default credentials configured
 
 ### 2. Poetry Package Manager
@@ -18,7 +18,7 @@
 - ✓ Cloud Storage API enabled
 
 ### 4. Cloud Storage
-- ✓ Bucket created: `gs://shl-agent-staging`
+- ✓ Bucket created: `gs://YOUR_BUCKET_NAME`
 - ✓ Location: `us-central1`
 
 ### 5. Project Structure
@@ -51,9 +51,9 @@ shl-recommendation-system/
 File: `.env`
 ```bash
 GOOGLE_GENAI_USE_VERTEXAI=TRUE
-GOOGLE_CLOUD_PROJECT=shl-recommender-477516
+GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID
 GOOGLE_CLOUD_LOCATION=us-central1
-GOOGLE_CLOUD_STAGING_BUCKET=gs://shl-agent-staging
+GOOGLE_CLOUD_STAGING_BUCKET=gs://YOUR_BUCKET_NAME
 GEMINI_API_KEY=AIzaSyCqMxXXHLGbG-eRx7YLOXBwWPwZq4dnLOw
 ```
 
@@ -61,9 +61,9 @@ GEMINI_API_KEY=AIzaSyCqMxXXHLGbG-eRx7YLOXBwWPwZq4dnLOw
 
 ### Step 1: Activate Virtual Environment
 ```bash
-source /Users/siddhantgond/Desktop/shl/vir_env/bin/activate
+source /path/to/your/project/vir_env/bin/activate
 export PATH="/Users/siddhantgond/.local/bin:$PATH"
-cd /Users/siddhantgond/Desktop/shl/shl-recommendation-system
+cd /path/to/your/project/shl-recommendation-system
 ```
 
 ### Step 2: Test Locally (Recommended)
@@ -154,14 +154,14 @@ gcloud auth application-default login
 
 ### If you get permission errors
 ```bash
-gcloud projects add-iam-policy-binding shl-recommender-477516 \
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
   --member="user:siddhant.gond22b@iiitg.ac.in" \
   --role="roles/aiplatform.user"
 ```
 
 ### If bucket doesn't exist
 ```bash
-gsutil mb -l us-central1 gs://shl-agent-staging
+gsutil mb -l us-central1 gs://YOUR_BUCKET_NAME
 ```
 
 ## Cost Monitoring

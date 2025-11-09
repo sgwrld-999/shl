@@ -11,14 +11,27 @@ echo -e "${BLUE}SHL Recommendation System${NC}"
 echo -e "${BLUE}================================${NC}"
 echo ""
 
-# Activate virtual environment
-source /Users/siddhantgond/Desktop/shl/vir_env/bin/activate
-export PATH="/Users/siddhantgond/.local/bin:$PATH"
-cd /Users/siddhantgond/Desktop/shl/shl-recommendation-system
+# Get script directory for dynamic path resolution
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo -e "${GREEN}✓ Virtual environment activated${NC}"
-echo -e "${GREEN}✓ Poetry added to PATH${NC}"
-echo -e "${GREEN}✓ Changed to project directory${NC}"
+# Use environment variables or detect paths dynamically
+VENV_PATH="${VENV_PATH:-$(find "$SCRIPT_DIR/.." -maxdepth 2 -name "vir_env" -o -name "venv" -o -name ".venv" | head -1)}"
+PROJECT_PATH="${PROJECT_PATH:-$SCRIPT_DIR}"
+POETRY_PATH="${POETRY_PATH:-$HOME/.local/bin}"
+
+# Fallback if detection fails
+if [ -z "$VENV_PATH" ] || [ ! -d "$VENV_PATH" ]; then
+    echo -e "${BLUE}Note: Virtual environment not found. Using current Python environment.${NC}"
+else
+    source "$VENV_PATH/bin/activate"
+    echo -e "${GREEN}✓ Virtual environment activated: $VENV_PATH${NC}"
+fi
+
+export PATH="$POETRY_PATH:$PATH"
+cd "$PROJECT_PATH"
+
+echo -e "${GREEN}✓ Poetry added to PATH: $POETRY_PATH${NC}"
+echo -e "${GREEN}✓ Project directory: $PROJECT_PATH${NC}"
 echo ""
 echo "You can now run:"
 echo "  poetry run python deployment/local.py          # Test locally"

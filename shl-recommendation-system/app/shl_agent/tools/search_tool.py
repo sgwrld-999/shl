@@ -18,9 +18,25 @@ class InMemoryFAISSSearcher:
     def __init__(self, data_path: str = None):
         """Initialize searcher with in-memory FAISS index"""
         if data_path is None:
-            # Default path relative to project root
-            project_root = Path(__file__).parent.parent.parent.parent
-            data_path = project_root / "data" / "individual-assessment.json"
+            # Try multiple possible locations for the data file
+            possible_paths = [
+                # Cloud deployment location (extra_packages puts data in root)
+                Path("data/individual-assessment.json"),
+                # Local relative to project root
+                Path(__file__).parent.parent.parent.parent / "data" / "individual-assessment.json",
+                # Local relative to app directory
+                Path(__file__).parent.parent.parent / "data" / "individual-assessment.json",
+            ]
+            
+            for path in possible_paths:
+                if path.exists():
+                    data_path = path
+                    break
+            
+            if data_path is None:
+                raise FileNotFoundError(
+                    f"Could not find individual-assessment.json in any of: {possible_paths}"
+                )
         
         self.data_path = Path(data_path)
         
@@ -93,16 +109,23 @@ class InMemoryFAISSSearcher:
         return results
 
 
-# Global searcher instance (lazy initialization)
-_searcher = None
+# Global searcher instance
+_searcher_instance = None
+_searcher_loading = False
 
 
-def get_searcher() -> InMemoryFAISSSearcher:
-    """Get or create global searcher instance"""
-    global _searcher
-    if _searcher is None:
-        _searcher = InMemoryFAISSSearcher()
-    return _searcher
+def get_searcher():
+    """Get global searcher instance (singleton pattern with lazy loading)"""
+    global _searcher_instance, _searcher_loading
+    
+    if _searcher_instance is None and not _searcher_loading:
+        _searcher_loading = True
+        print("⏳ Initializing FAISS searcher (first request only)...")
+        _searcher_instance = InMemoryFAISSSearcher()
+        print("✓ FAISS searcher ready")
+        _searcher_loading = False
+    
+    return _searcher_instance
 
 
 def balance_test_types(results: List[Dict[str, Any]], query: str) -> List[Dict[str, Any]]:

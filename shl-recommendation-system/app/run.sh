@@ -5,15 +5,29 @@
 echo "🚀 Starting SHL Assessment Recommendation System"
 echo "================================================"
 
-# Activate virtual environment
-source /Users/siddhantgond/Desktop/Github_Modules/google_adk_kit/vir_env/bin/activate
+# Get script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Find virtual environment (look in parent directories)
+VENV_PATH="${VENV_PATH:-$(find "$SCRIPT_DIR/../.." -maxdepth 2 -name "vir_env" -o -name "venv" -o -name ".venv" | head -1)}"
+
+# Activate virtual environment if found
+if [ -n "$VENV_PATH" ] && [ -d "$VENV_PATH" ]; then
+    source "$VENV_PATH/bin/activate"
+    echo "✓ Virtual environment activated: $VENV_PATH"
+else
+    echo "ℹ Using current Python environment"
+fi
 
 # Navigate to app directory
-cd /Users/siddhantgond/Desktop/Github_Modules/google_adk_kit/shl-recommendation-system/app
+cd "$SCRIPT_DIR"
 
-echo "✓ Virtual environment activated"
 echo "✓ Starting server on http://localhost:8000"
 echo ""
 
-# Run the application
-python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+# Detect Poetry or use python directly
+if command -v poetry &> /dev/null; then
+    poetry run python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+else
+    python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+fi

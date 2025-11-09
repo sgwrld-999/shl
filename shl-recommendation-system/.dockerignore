@@ -1,0 +1,38 @@
+# Virtual environments
+vir_env/
+venv/
+env/
+.venv/
+
+# Development files
+deployment/
+test/
+docs/
+google-cloud-sdk/
+*.md
+.git/
+.gitignore
+.DS_Store
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Poetry files
+poetry.lock
+pyproject.toml
+
+# Scripts
+*.sh
+check_status.py
+
+# Environment files (will be set via Cloud Run)
+.env.example
+
+# Logs and temp files
+*.log
+*.csv
+predictions.csv

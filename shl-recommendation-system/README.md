@@ -452,7 +452,7 @@ poetry run deploy-remote --create
 - Auto-scaling and high availability
 - Built-in tracing and monitoring
 
-See [QUICKSTART.md](QUICKSTART.md) for 5-minute setup guide or [DEPLOYMENT.md](DEPLOYMENT.md) for detailed documentation.
+See [ACCESS_GUIDE.md](ACCESS_GUIDE.md) for deployment guide and [SETUP_COMPLETE.md](SETUP_COMPLETE.md) for configuration reference.
 
 ### Local Deployment (Development)
 

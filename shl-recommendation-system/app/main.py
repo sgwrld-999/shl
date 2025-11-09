@@ -66,8 +66,8 @@ class RecommendResponse(BaseModel):
 # Health check endpoint
 @app.get("/health")
 async def health_check():
-    """Health check endpoint as per SHL requirements"""
-    return {"status": "healthy"}
+    """Health check endpoint as per SHL requirements - responds immediately"""
+    return {"status": "healthy", "message": "Service is running"}
 
 
 # Main recommendation endpoint
@@ -78,9 +78,13 @@ async def recommend(request: RecommendRequest):
     Returns 5-10 recommended assessments based on query
     """
     try:
-        # Search using FAISS
+        print(f"📥 Received recommendation request: {request.query[:50]}...")
+        
+        # Search using FAISS (lazy-loaded on first request)
         results_json = search_assessments(request.query, max_results=10)
         results = json.loads(results_json)
+        
+        print(f"✅ Found {len(results)} recommendations")
         
         # Format recommendations
         recommendations = []
@@ -135,6 +139,17 @@ async def table_view():
     return {"error": "Table view not found"}
 
 
+@app.on_event("startup")
+async def startup_event():
+    """Startup event - log that service is ready"""
+    print("🚀 SHL Assessment Recommendation API starting up...")
+    print("✓ Service ready to accept requests")
+    print("⏳ FAISS index will be loaded on first recommendation request")
+
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    import os
+    port = int(os.getenv("PORT", 8080))
+    print(f"Starting server on port {port}")
+    uvicorn.run(app, host="0.0.0.0", port=port)
