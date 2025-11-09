@@ -4,6 +4,7 @@ ADK-based conversational agent for assessment recommendations
 """
 
 from google.adk.agents import Agent
+from vertexai.agent_engines import AdkApp
 
 from .tools.search_tool import search_assessments
 from .tools.format_tool import format_recommendations
@@ -55,3 +56,7 @@ Be helpful, precise, and focused on matching assessments to user needs.
     """,
     tools=[search_assessments, format_recommendations]
 )
+
+# Wrap agent in AdkApp for Vertex AI deployment
+# This is required for deployment to Vertex AI Agent Engine
+app = AdkApp(agent=root_agent)

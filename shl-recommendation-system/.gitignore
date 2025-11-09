@@ -106,3 +106,12 @@ app/predictions.csv
 data/*
 !data/.gitkeep
 !data/individual-assessment.json
+
+# Deployment artifacts (cloud deployment removed - local only now)
+.deployed_agent_resource
+deployment_logs.json
+deployment_error_logs.json
+deployment_output.log
+
+# Server logs
+server.log

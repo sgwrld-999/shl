@@ -7,11 +7,12 @@
 
 An AI-powered assessment recommendation system for SHL hiring assessments using semantic search, in-memory FAISS vector database, and intelligent test type balancing. Built with Google ADK (Agent Development Kit), FastAPI, and sentence transformers for production-ready performance.
 
-## Live Demo
+## Deployment
 
-- **Chatbot Interface**: [http://your-deployment-url.com](http://your-deployment-url.com)
-- **API Endpoint**: [http://your-deployment-url.com/recommend](http://your-deployment-url.com/recommend)
-- **Table View**: [http://your-deployment-url.com/table](http://your-deployment-url.com/table)
+🚀 **Deployed on:** Google Cloud Vertex AI Reasoning Engine  
+📍 **Platform:** Serverless, fully managed  
+🤖 **Model:** Gemini 2.0 Flash Experimental  
+📊 **Data:** 348+ SHL assessments with FAISS semantic search
 
 ## Table of Contents
 
@@ -427,56 +428,101 @@ python generate_predictions_standalone.py
 
 ## Deployment
 
-### Google Cloud Deployment (Recommended)
+### 🚀 Vertex AI Deployment (Production)
 
-The project is optimized for deployment on Google Cloud using Agent Engine:
+This system is deployed on **Google Cloud Vertex AI Reasoning Engine** using the Agent Development Kit (ADK).
 
-#### Quick Setup
+#### Quick Deploy (30 minutes)
 ```bash
-# Run automated setup
-./setup_gcloud.sh
+# 1. Set environment variables
+export GOOGLE_CLOUD_PROJECT="your-project-id"
+export GOOGLE_CLOUD_LOCATION="us-central1"
+export GOOGLE_GENAI_USE_VERTEXAI="true"
 
-# Activate environment
-poetry shell
+# 2. Run setup
+./setup_vertex_ai.sh
 
-# Test locally
-poetry run deploy-local
+# 3. Install dependencies
+pip install -r requirements.txt
 
-# Deploy to cloud
-poetry run deploy-remote --create
+# 4. Deploy to Vertex AI
+python deploy_to_vertex_ai.py
+
+# 5. Test deployment
+python test_deployed_agent.py
 ```
 
 #### Key Features
-- Powered by Google ADK and Vertex AI
-- Managed runtime with Agent Engine
-- Auto-scaling and high availability
-- Built-in tracing and monitoring
+- ✅ **Serverless:** Fully managed, no infrastructure maintenance
+- ✅ **Scalable:** Auto-scaling based on demand
+- ✅ **Fast:** Sub-second FAISS search with Gemini 2.0 Flash
+- ✅ **Monitored:** Built-in logging and metrics
+- ✅ **Cost-Effective:** Pay per request, no idle costs
 
-See [ACCESS_GUIDE.md](ACCESS_GUIDE.md) for deployment guide and [SETUP_COMPLETE.md](SETUP_COMPLETE.md) for configuration reference.
+#### Troubleshooting
 
-### Local Deployment (Development)
-
+**Missing cloudpickle dependency:**
 ```bash
-# Start the FastAPI application
-./run.sh
-
-# Or manually
-python -m uvicorn main:app --host 0.0.0.0 --port 8000
+pip install 'cloudpickle>=3.0.0'
 ```
 
-### Production Deployment (Render - Alternative)
+**Permission denied:**
+```bash
+gcloud projects add-iam-policy-binding $GOOGLE_CLOUD_PROJECT \
+  --member="user:$(gcloud config get-value account)" \
+  --role="roles/aiplatform.user"
+```
 
-The project includes a `render.yaml` configuration file for easy deployment to Render.com:
+**API not enabled:**
+```bash
+gcloud services enable aiplatform.googleapis.com
+```
 
-1. Push your code to a GitHub repository
-2. Connect your repository to Render
-3. Render will automatically detect the `render.yaml` configuration
-4. Set your environment variables (especially `GEMINI_API_KEY`)
-5. Deploy the application
+**Import error:**
+```bash
+pip install --upgrade 'google-adk>=1.5.0'
+```
 
-### Docker Deployment (Optional)
+#### Expected Results
+- ✅ Setup: 5 minutes
+- ✅ Deploy: 5-10 minutes  
+- ✅ Test: 2 minutes
+- ✅ Total: ~20 minutes
 
-```dockerfile
+### Local Development & Testing
+
+```bash
+# Option 1: Using FastAPI directly
+cd app
+python main.py
+
+# Option 2: Using uvicorn
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+# Access:
+# - API: http://localhost:8000/recommend
+# - Docs: http://localhost:8000/docs
+# - Chat UI: http://localhost:8000/static/chat.html
+```
+
+### Architecture Overview
+
+```
+User Query
+    ↓
+Vertex AI Reasoning Engine
+    ↓
+ADK Agent (Gemini 2.0 Flash)
+    ↓
+Tools: [search_assessments, format_recommendations]
+    ↓
+FAISS In-Memory Vector Search
+    ↓
+348 SHL Assessments
+    ↓
+Intelligent Test Type Balancing
+    ↓
+Top 5-10 Recommendations
 FROM python:3.9-slim
 
 WORKDIR /app
