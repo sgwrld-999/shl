@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "shl-recommendation-system"
+version = "1.0.0"
+description = "SHL Assessment Recommendation System using Google ADK"
+authors = ["Siddhant Gond <siddhant.gond22b@iiitg.ac.in>"]
+readme = "README.md"
+license = "MIT"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+fastapi = "^0.115.0"
+uvicorn = {extras = ["standard"], version = "^0.34.0"}
+python-multipart = "^0.0.9"
+faiss-cpu = "^1.8.0"
+sentence-transformers = "^3.1.1"
+numpy = "^1.26.4"
+pandas = "^2.2.2"
+python-dotenv = "^1.0.1"
+httpx = "^0.28.1"
+google-cloud-aiplatform = {extras = ["adk", "agent_engines"], version = "^1.120.0"}
+absl-py = "^2.1.0"
+cloudpickle = "^3.0.0"
+pydantic = "^2.11.3"
+
+[tool.poetry.scripts]
+shl-app = "app.main:app"
+deploy-local = "deployment.local:main"
+deploy-remote = "deployment.remote:main"
+cleanup = "deployment.cleanup:cleanup_deployment"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
